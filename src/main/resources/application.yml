@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: ticket-app
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ticket_app
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 9090
+
