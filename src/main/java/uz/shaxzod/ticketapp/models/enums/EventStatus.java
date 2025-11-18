@@ -1,6 +1,6 @@
 package uz.shaxzod.ticketapp.models.enums;
 
-public enum ShowStatus {
+public enum EventStatus {
     SCHEDULED,
     CANCELED,
     POSTPONED

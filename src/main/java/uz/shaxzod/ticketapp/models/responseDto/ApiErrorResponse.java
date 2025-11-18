@@ -14,10 +14,15 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class ApiErrorResponse {
-    String message;
-    HttpStatus httpStatus;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime localDateTime;
-    private int code;
+    private Boolean success;
+    private String message;
+    private Object data;
+    private LocalDateTime dateTime;
 
+    public ApiErrorResponse(String message) {
+        this.success = false;
+        data = null;
+        dateTime = LocalDateTime.now();
+        this.message = message;
+    }
 }

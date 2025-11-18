@@ -24,6 +24,7 @@ public class Venue {
     private String city;
     @Column(nullable = false)
     private String address;
+    private String phoneNumber;
     private LocalDateTime createdAt;
 
     @PostConstruct

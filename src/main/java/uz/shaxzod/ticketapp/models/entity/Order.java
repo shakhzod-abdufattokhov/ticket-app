@@ -23,7 +23,7 @@ public class Order {
     @ManyToOne
     private User user;
     @ManyToOne
-    private Show show;
+    private Event show;
     @ManyToOne
     private Seat seat;
     private Long totalAmount;

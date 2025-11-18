@@ -6,44 +6,50 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uz.shaxzod.ticketapp.models.enums.SeatType;
+import uz.shaxzod.ticketapp.models.enums.EventStatus;
+import uz.shaxzod.ticketapp.models.enums.EventType;
+import uz.shaxzod.ticketapp.models.enums.Language;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Seat {
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Venue venue;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Show show;
     @Column(nullable = false)
-    private String section;
+    private String title;
+    private String description;
+    @Enumerated(EnumType.STRING)
+    private EventStatus status;
+    @Enumerated(EnumType.STRING)
+    private EventType type;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Show> shows;
     @Column(nullable = false)
-    private String row;
+    private Language language; // show language, which language it holds
     @Column(nullable = false)
-    private Integer number;
-    private SeatType type;
-    private Long price;
-    private String seatLabel;
-    private boolean isOrdered;
+    private Integer minAge;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @PostConstruct
-    private void created(){
+    private void created() {
         this.createdAt = LocalDateTime.now();
-        this.isOrdered = false;
+        this.language = Language.UZ;
     }
 
     @PreUpdate
-    private void updated(){
+    private void updated() {
         this.updatedAt = LocalDateTime.now();
     }
+
 }
