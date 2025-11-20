@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 import uz.shaxzod.ticketapp.models.enums.Role;
 
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,12 +35,12 @@ public class User implements UserDetails {
     private Role role;
     private LocalDateTime createdAt;
 
-    @PostConstruct
-    private void created(){
+    @PrePersist
+    private void onCreate(){
         this.createdAt = LocalDateTime.now();
     }
 
-    @Override
+/*    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
@@ -53,7 +53,7 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return phoneNumber;
-    }
+    }*/
 
 
 }

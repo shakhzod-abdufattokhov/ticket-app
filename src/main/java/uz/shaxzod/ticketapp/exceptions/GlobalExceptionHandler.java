@@ -7,9 +7,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.access.AccessDeniedException;
+//import org.springframework.security.authentication.BadCredentialsException;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -120,7 +120,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 //    }
 
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+/*    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UsernameNotFoundException.class)
     public ApiErrorResponse handleUsernameNotFoundException(UsernameNotFoundException e) {
         return new ApiErrorResponse("user name or password is incorrect");
@@ -131,7 +131,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ApiErrorResponse handleBadCredentialsException(BadCredentialsException e) {
         return new ApiErrorResponse("user name or password is incorrect");
     }
-
+*/
 //    @ResponseStatus(HttpStatus.UNAUTHORIZED)
 //    @ExceptionHandler(ExpiredJwtException.class)
 //    public ApiErrorResponse handleExpiredJwtException(ExpiredJwtException exception) {
@@ -144,11 +144,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 //        return new ApiErrorResponse(exception.getMessage());
 //    }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+/*    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     public ApiErrorResponse handleAccessDeniedException(AccessDeniedException exception) {
         return new ApiErrorResponse(exception.getMessage());
-    }
+    }*/
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomIllegalArgumentException.class)

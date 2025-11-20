@@ -2,14 +2,12 @@ package uz.shaxzod.ticketapp.models.entity;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uz.shaxzod.ticketapp.models.enums.EventStatus;
 import uz.shaxzod.ticketapp.models.enums.EventType;
 import uz.shaxzod.ticketapp.models.enums.Language;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,24 +30,23 @@ public class Event {
     private EventStatus status;
     @Enumerated(EnumType.STRING)
     private EventType type;
-
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Show> shows;
     @Column(nullable = false)
     private Language language; // show language, which language it holds
     @Column(nullable = false)
-    private Integer minAge;
+    private Short minAge;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @PostConstruct
-    private void created() {
+    @PrePersist
+    private void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.language = Language.UZ;
     }
 
     @PreUpdate
-    private void updated() {
+    private void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 

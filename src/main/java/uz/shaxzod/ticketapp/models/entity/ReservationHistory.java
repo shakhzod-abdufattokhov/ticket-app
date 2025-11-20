@@ -33,8 +33,8 @@ public class ReservationHistory {
     private ReservStatus oldStatus;
     private LocalDateTime createdAt;
 
-    @PostConstruct
-    private void created(){
+    @PrePersist
+    private void onUpdate(){
         this.createdAt = LocalDateTime.now();
     }
 }

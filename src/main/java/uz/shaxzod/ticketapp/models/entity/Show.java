@@ -23,7 +23,7 @@ public class Show {
     private Long id;
     @ManyToOne
     private Event event;
-    private LocalDate startDay;
+    private LocalDate showDay;
     private LocalTime startTime;
     private LocalTime endTime;
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -31,13 +31,13 @@ public class Show {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @PostConstruct
-    private void created() {
+    @PrePersist
+    private void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
-    private void updated() {
+    private void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 

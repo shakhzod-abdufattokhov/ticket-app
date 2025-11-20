@@ -3,7 +3,6 @@ package uz.shaxzod.ticketapp.models.responseDto;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @AllArgsConstructor

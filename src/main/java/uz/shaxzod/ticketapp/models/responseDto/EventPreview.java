@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @Setter
 @Builder
 public class EventPreview {
+    private Long id;
     private String title;
     private LocalDate startDate;
     private LocalTime startTime;

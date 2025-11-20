@@ -2,17 +2,16 @@ package uz.shaxzod.ticketapp.models.entity;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 public class Venue {
     @Id
@@ -25,10 +24,12 @@ public class Venue {
     @Column(nullable = false)
     private String address;
     private String phoneNumber;
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Event> events;
     private LocalDateTime createdAt;
 
-    @PostConstruct
-    private void created(){
-        this.createdAt = LocalDateTime.now();
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 }

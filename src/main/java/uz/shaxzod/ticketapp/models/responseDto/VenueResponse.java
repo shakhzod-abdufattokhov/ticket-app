@@ -10,9 +10,10 @@ import java.util.List;
 @Setter
 @Builder
 public class VenueResponse {
+    private Long id;
     private String name;
     private String address;
     private String city;
     private String phoneNumber;
-    private List<EventPreview> events;
+//    private List<EventPreview> events;  ToDo Write getByVenueId() method in EventService
 }
