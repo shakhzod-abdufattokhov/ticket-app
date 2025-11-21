@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class Order {
     @ManyToOne
     private User user;
     @ManyToOne
-    private Show show;
+    private Event show;
     @ManyToOne
     private Seat seat;
     private Long totalAmount;
@@ -30,8 +31,8 @@ public class Order {
     private String idempotencyKey;
     private LocalDateTime createdAt;
 
-    @PostConstruct
-    private void created(){
+    @PrePersist
+    private void onCreate(){
         this.createdAt = LocalDateTime.now();
     }
 

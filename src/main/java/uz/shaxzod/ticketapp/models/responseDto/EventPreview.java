@@ -1,0 +1,21 @@
+package uz.shaxzod.ticketapp.models.responseDto;
+
+import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+public class EventPreview {
+    private Long id;
+    private String title;
+    private LocalDate startDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private Long lowestPrice;
+    private String status;
+}

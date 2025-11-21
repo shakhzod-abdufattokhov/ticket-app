@@ -21,7 +21,7 @@ public class Seat {
     private Long id;
     @ManyToOne
     private Venue venue;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Show show;
     @Column(nullable = false)
     private String section;
@@ -36,14 +36,14 @@ public class Seat {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @PostConstruct
-    private void created(){
+    @PrePersist
+    private void onCreate(){
         this.createdAt = LocalDateTime.now();
         this.isOrdered = false;
     }
 
     @PreUpdate
-    private void updated(){
+    private void onUpdate(){
         this.updatedAt = LocalDateTime.now();
     }
 }

@@ -30,8 +30,8 @@ public class Ticket {
     private LocalDate issuedAt;
     private LocalDateTime createdAt;
 
-    @PostConstruct
-    private void created(){
+    @PrePersist
+    private void onCreate(){
         this.issuedAt = LocalDate.now();
         this.createdAt = LocalDateTime.now();
 

@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: false
     database: postgresql
     properties:
@@ -19,4 +19,11 @@ spring:
 
 server:
   port: 9090
+
+file:
+  storage:
+    path: C:\Users\smart\OneDrive\Desktop\ticket-app files\storage
+  access:
+    url: http://149.102.137.239:8080/api/v1/files/
+    compressedUrl: http://149.102.137.239:8080/api/v1/files/compressed/
 
