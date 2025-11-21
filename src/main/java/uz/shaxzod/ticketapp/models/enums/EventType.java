@@ -1,5 +1,7 @@
 package uz.shaxzod.ticketapp.models.enums;
 
+import uz.shaxzod.ticketapp.exceptions.CustomIllegalArgumentException;
+
 import java.util.Arrays;
 
 public enum EventType {
@@ -15,6 +17,11 @@ public enum EventType {
     }
 
     public static EventType from(String type) {
-        return null;
+        if(type == null) return EventType.CONCERT;
+        try{
+            return EventType.valueOf(type.toUpperCase());
+        }catch (CustomIllegalArgumentException e){
+            return EventType.CONCERT;
+        }
     }
 }

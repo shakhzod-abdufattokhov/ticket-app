@@ -28,6 +28,8 @@ public class Show {
     private LocalTime endTime;
     @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Seat> seats;
+    private Long minPrice;
+    private Long maxPrice;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

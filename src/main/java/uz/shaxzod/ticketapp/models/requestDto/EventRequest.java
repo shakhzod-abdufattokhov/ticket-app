@@ -22,12 +22,6 @@ public class EventRequest {
     private String description;
     @NotNull(message = "Type can not be null")
     private String type;
-    @NotNull(message = "Start Date can not be null")
-    private LocalDate startDate;
-    @NotNull(message = "Start time can not be null")
-    private LocalTime startTime;
-    @NotNull(message = "End time can not be null")
-    private LocalTime endTime;
     private String language;
     private Short minAge;
 }

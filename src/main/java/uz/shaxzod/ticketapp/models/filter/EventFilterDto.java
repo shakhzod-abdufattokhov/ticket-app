@@ -19,4 +19,6 @@ public class EventFilterDto {
     private Long venueId;
     private Short age;
     private String language;
+    private Integer page;
+    private Integer size;
 }

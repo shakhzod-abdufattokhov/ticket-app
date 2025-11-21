@@ -16,5 +16,6 @@ public class EventPreview {
     private LocalDate startDate;
     private LocalTime startTime;
     private LocalTime endTime;
-    private String lowestPrice;
+    private Long lowestPrice;
+    private String status;
 }
