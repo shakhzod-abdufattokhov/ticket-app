@@ -19,8 +19,8 @@ import java.time.OffsetDateTime;
 @Entity
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @ManyToOne
     private Order order;
     @Column(unique = true)

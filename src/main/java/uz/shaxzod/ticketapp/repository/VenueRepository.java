@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import uz.shaxzod.ticketapp.models.entity.Venue;
 
 @Repository
-public interface VenueRepository extends JpaRepository<Venue, Long> {
+public interface VenueRepository extends JpaRepository<Venue, String> {
 }

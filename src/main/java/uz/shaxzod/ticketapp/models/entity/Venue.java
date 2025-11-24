@@ -14,8 +14,8 @@ import java.util.List;
 @Entity
 public class Venue {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

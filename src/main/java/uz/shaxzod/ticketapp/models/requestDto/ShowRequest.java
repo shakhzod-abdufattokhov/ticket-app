@@ -1,9 +1,6 @@
 package uz.shaxzod.ticketapp.models.requestDto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,9 +9,9 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class ShowRequest {
-    private Long venueId;
-    private Long eventId;
+    private String eventId;
     private LocalDate day;
     private Long basePrice;
     private LocalTime startTime;

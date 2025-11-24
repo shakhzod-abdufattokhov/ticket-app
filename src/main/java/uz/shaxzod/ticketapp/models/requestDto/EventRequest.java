@@ -2,10 +2,7 @@ package uz.shaxzod.ticketapp.models.requestDto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,6 +11,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class EventRequest {
     @NotNull(message = "Venue can't be null")
     private Long venueId;

@@ -11,10 +11,11 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 public class ShowResponse {
-    private Long id;
-    private LocalDate startDay;
+    private String id;
+    private LocalDate day;
     private LocalTime startTime;
     private LocalTime endTime;
-    private List<Long> seatIds;
+//    private List<Long> seatIds;
 }

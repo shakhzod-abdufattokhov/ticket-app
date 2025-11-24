@@ -2,10 +2,7 @@ package uz.shaxzod.ticketapp.models.entity;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,15 +14,17 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
 public class Show {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @ManyToOne
     private Event event;
     private LocalDate showDay;
     private LocalTime startTime;
     private LocalTime endTime;
+    private Long basePrice;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

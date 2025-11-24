@@ -2,15 +2,13 @@ package uz.shaxzod.ticketapp.models.requestDto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class VenueRequest {
     @NotNull(message = "Name can't be null")
     private String name;

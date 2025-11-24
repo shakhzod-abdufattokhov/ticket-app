@@ -30,7 +30,7 @@ public class EventMapper {
         return EventDetailedResponse.builder()
                 .title(event.getTitle())
                 .description(event.getDescription())
-                .lowestPrice(!event.getShows().isEmpty() ? event.getShows().get(0).getMinPrice() : 0)
+                .lowestPrice(!event.getShows().isEmpty() ? event.getShows().get(0).getBasePrice() : 0)
                 .venueId(event.getVenue().getId())
                 .status(event.getStatus().toString())
                 .type(event.getType().toString())
@@ -46,7 +46,7 @@ public class EventMapper {
                 .startDate(!event.getShows().isEmpty() ? event.getShows().get(0).getShowDay() : null)
                 .startTime(!event.getShows().isEmpty() ? event.getShows().get(0).getStartTime() : null)
                 .endTime(!event.getShows().isEmpty() ? event.getShows().get(0).getEndTime() : null)
-                .lowestPrice(!event.getShows().isEmpty() ? event.getShows().get(0).getMinPrice() : 0)
+                .lowestPrice(!event.getShows().isEmpty() ? event.getShows().get(0).getBasePrice() : 0)
                 .build();
     }
 

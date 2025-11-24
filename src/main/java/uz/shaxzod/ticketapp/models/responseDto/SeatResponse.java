@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class SeatResponse {
-    private Long id;
+    private String id;
     private String section;
     private String row;
     private Integer number;
