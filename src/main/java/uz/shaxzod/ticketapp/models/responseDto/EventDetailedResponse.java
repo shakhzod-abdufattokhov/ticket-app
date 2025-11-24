@@ -11,12 +11,13 @@ import java.util.List;
 @Setter
 @Builder
 public class EventDetailedResponse {
+    private String id;
     private String title;
     private String description;
 //    private LocalDate startDate; // the nearest day
     private List<ShowResponse> showResponseList;
     private Long lowestPrice;
-    private Long venueId;
+    private String venueId;
     private String status;
     private String type;
     private String language;

@@ -12,7 +12,7 @@ import uz.shaxzod.ticketapp.models.enums.EventType;
 import java.time.LocalDate;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
+public interface EventRepository extends JpaRepository<Event, String>, JpaSpecificationExecutor<Event> {
     @Query("""
             select e from Event e
             left join fetch e.shows s
@@ -25,4 +25,6 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             where s.showDay >= :now
             """)
     Page<Event> findAll(LocalDate now, Pageable pageable);
+
+    Long id(String id);
 }

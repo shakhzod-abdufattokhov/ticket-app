@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FileStorageRepository extends JpaRepository<FileStorage, Long> {
+public interface FileStorageRepository extends JpaRepository<FileStorage, String> {
 //    @Query("""
 //        select f from FileStorage f
 //        join ItemImage i on f.id = i.image.id

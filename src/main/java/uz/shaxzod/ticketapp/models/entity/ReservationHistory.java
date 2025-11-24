@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 @Entity
 public class ReservationHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Column(nullable = false)
     private Long userId;
     @Column(nullable = false)

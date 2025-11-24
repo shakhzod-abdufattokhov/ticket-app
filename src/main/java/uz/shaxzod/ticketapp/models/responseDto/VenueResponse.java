@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Builder
 public class VenueResponse {
-    private Long id;
+    private String id;
     private String name;
     private String address;
     private String city;

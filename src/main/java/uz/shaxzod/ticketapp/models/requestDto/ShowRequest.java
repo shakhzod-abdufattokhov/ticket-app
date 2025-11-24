@@ -1,21 +1,19 @@
-package uz.shaxzod.ticketapp.models.responseDto;
+package uz.shaxzod.ticketapp.models.requestDto;
 
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @ToString
-public class ShowResponse {
-    private String id;
+public class ShowRequest {
+    private String eventId;
     private LocalDate day;
+    private Long basePrice;
     private LocalTime startTime;
     private LocalTime endTime;
-//    private List<Long> seatIds;
 }

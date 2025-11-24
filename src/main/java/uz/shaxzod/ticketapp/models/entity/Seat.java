@@ -17,12 +17,10 @@ import java.time.LocalDateTime;
 @Entity
 public class Seat {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @ManyToOne
     private Venue venue;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Show show;
     @Column(nullable = false)
     private String section;
     @Column(nullable = false)
@@ -30,16 +28,13 @@ public class Seat {
     @Column(nullable = false)
     private Integer number;
     private SeatType type;
-    private Long price;
     private String seatLabel;
-    private boolean isOrdered;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @PrePersist
     private void onCreate(){
         this.createdAt = LocalDateTime.now();
-        this.isOrdered = false;
     }
 
     @PreUpdate

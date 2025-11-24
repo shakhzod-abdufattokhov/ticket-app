@@ -19,8 +19,8 @@ import java.util.List;
 @Builder
 public class Event {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @ManyToOne(fetch = FetchType.EAGER)
     private Venue venue;
     @Column(nullable = false)

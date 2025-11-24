@@ -1,6 +1,5 @@
 package uz.shaxzod.ticketapp.models.entity;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,8 +14,8 @@ import java.util.List;
 @Entity
 public class Venue {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -26,6 +25,8 @@ public class Venue {
     private String phoneNumber;
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> events;
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Seat> seats;
     private LocalDateTime createdAt;
 
     @PrePersist
