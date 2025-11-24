@@ -21,8 +21,6 @@ public class Seat {
     private Long id;
     @ManyToOne
     private Venue venue;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Show show;
     @Column(nullable = false)
     private String section;
     @Column(nullable = false)
@@ -30,7 +28,6 @@ public class Seat {
     @Column(nullable = false)
     private Integer number;
     private SeatType type;
-    private Long price;
     private String seatLabel;
     private boolean isOrdered;
     private LocalDateTime createdAt;
