@@ -10,15 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface VenueService {
-    ApiResponse<VenueResponse> create(VenueRequest request);
-    ApiResponse<VenueResponse> get(Long id);
+    ApiResponse<String> create(VenueRequest request);
+    ApiResponse<VenueResponse> get(String id);
     ApiResponse<PaginationResponse> getAll(Pageable pageable);
-    ApiResponse<VenueResponse> patch(Long id, Map<String, Object> values);
-    ApiResponse<VenueResponse> update(Long id, VenueRequest request);
-    ApiResponse<Void> delete(Long id);
-    //get
-    //getAll
-    //delete
-    //update
+    ApiResponse<VenueResponse> patch(String id, Map<String, Object> values);
+    ApiResponse<VenueResponse> update(String id, VenueRequest request);
+    ApiResponse<Void> delete(String id);
 
 }

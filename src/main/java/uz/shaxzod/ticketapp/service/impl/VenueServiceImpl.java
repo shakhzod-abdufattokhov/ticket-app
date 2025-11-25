@@ -27,19 +27,16 @@ public class VenueServiceImpl implements VenueService {
     private final VenueMapper venueMapper;
 
     @Override
-    public ApiResponse<VenueResponse> create(VenueRequest request) {
+    public ApiResponse<String> create(VenueRequest request) {
         log.info("Service - Creating Venue request: {}", request);
 
         Venue venue = venueMapper.toEntity(request);
-        venue = venueRepository.save(venue);
-        VenueResponse response = venueMapper.toResponse(venue);
-
         log.info("Service - Venue saved successfully");
-        return ApiResponse.success(response);
+        return ApiResponse.success(venue.getId(), "Created successfully");
     }
 
     @Override
-    public ApiResponse<VenueResponse> get(Long id) {
+    public ApiResponse<VenueResponse> get(String id) {
         log.info("Service - Get venue request: {}", id);
 
         Venue venue = venueRepository.findById(id).orElseThrow(
@@ -67,7 +64,7 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public ApiResponse<VenueResponse> patch(Long id, Map<String, Object> fields) {
+    public ApiResponse<VenueResponse> patch(String id, Map<String, Object> fields) {
         log.info("Service - Patch update request with id {} and values {}", id, fields);
         Venue venue = venueRepository.findById(id).orElseThrow(
                 () -> new CustomNotFoundException("Venue not found with id: " + id));
@@ -103,7 +100,7 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public ApiResponse<VenueResponse> update(Long id, VenueRequest request) {
+    public ApiResponse<VenueResponse> update(String id, VenueRequest request) {
         log.info("Service - Update Venue request {}", request);
 
         Venue venue = venueRepository.findById(id).orElseThrow(
@@ -118,7 +115,7 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public ApiResponse<Void> delete(Long id) {
+    public ApiResponse<Void> delete(String id) {
         log.info("Service Venue delete request with id: {}", id);
 
         venueRepository.findById(id).orElseThrow(

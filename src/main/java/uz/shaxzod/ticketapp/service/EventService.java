@@ -12,12 +12,13 @@ import uz.shaxzod.ticketapp.models.responseDto.PaginationResponse;
 import java.util.List;
 
 public interface EventService {
-    ApiResponse<Void> create(EventRequest request);
-    ApiResponse<EventDetailedResponse> getById(Long id);
+    ApiResponse<String> create(EventRequest request);
+    ApiResponse<EventDetailedResponse> getById(String id);
     ApiResponse<PaginationResponse> getAll(Pageable pageable);
+    ApiResponse<PaginationResponse> getAllValid(Pageable pageable);
     ApiResponse<PaginationResponse> getAllByType(String type, Pageable pageable);
-    ApiResponse<Void> changeStatus(Long id, String oldStatus, String newStatus); //Cancel, Postpone
+    ApiResponse<Void> changeStatus(String id, String oldStatus, String newStatus); //Cancel, Postpone
     ApiResponse<PaginationResponse> search(EventFilterDto filterDto);
-    ApiResponse<EventPreview> update(Long id, EventRequest request);
-    ApiResponse<Void> delete(Long id);
+    ApiResponse<EventPreview> update(String id, EventRequest request);
+    ApiResponse<Void> delete(String id);
 }

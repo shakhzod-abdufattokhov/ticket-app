@@ -5,6 +5,8 @@ import uz.shaxzod.ticketapp.models.entity.Show;
 import uz.shaxzod.ticketapp.models.requestDto.ShowRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ShowResponse;
 
+import java.util.List;
+
 @Component
 public class ShowMapper {
     public Show toEntity(ShowRequest request) {
@@ -23,5 +25,11 @@ public class ShowMapper {
                 .startTime(show.getStartTime())
                 .endTime(show.getEndTime())
                 .build();
+    }
+
+    public List<ShowResponse> toResponseList(List<Show> shows) {
+        return shows.stream()
+                .map(this::toResponse)
+                .toList();
     }
 }

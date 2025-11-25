@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ShowSeats {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "show_id")

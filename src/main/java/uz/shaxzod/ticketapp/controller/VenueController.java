@@ -21,7 +21,7 @@ public class VenueController {
     private final VenueService service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<VenueResponse>> get(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<VenueResponse>> get(@PathVariable String id){
         ApiResponse<VenueResponse> response = service.get(id);
         return ResponseEntity.ok(response);
     }
@@ -35,27 +35,27 @@ public class VenueController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<VenueResponse>> create(@RequestBody @Valid VenueRequest request){
-        ApiResponse<VenueResponse> response = service.create(request);
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid VenueRequest request){
+        ApiResponse<String> response = service.create(request);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/patch-update/{id}")
-    public ResponseEntity<ApiResponse<VenueResponse>> patchUpdate(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<VenueResponse>> patchUpdate(@PathVariable String id,
                                                   @RequestBody Map<String, Object> fields){
         ApiResponse<VenueResponse> response = service.patch(id, fields);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<VenueResponse>> update(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<VenueResponse>> update(@PathVariable String id,
                                              @RequestBody @Valid VenueRequest request){
         ApiResponse<VenueResponse> response = service.update(id, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String id){
         ApiResponse<Void> response = service.delete(id);
         return ResponseEntity.ok(response);
     }

@@ -20,7 +20,7 @@ public class EventController {
     private final EventService service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<EventDetailedResponse>> get(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<EventDetailedResponse>> get(@PathVariable String id) {
         ApiResponse<EventDetailedResponse> response = service.getById(id);
         return ResponseEntity.ok(response);
     }
@@ -30,6 +30,14 @@ public class EventController {
                                                                   @RequestParam(defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         ApiResponse<PaginationResponse> response = service.getAll(pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/valid")
+    public ResponseEntity<ApiResponse<PaginationResponse>> getAllValid(@RequestParam(defaultValue = "0") Integer page,
+                                                                  @RequestParam(defaultValue = "10") Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        ApiResponse<PaginationResponse> response = service.getAllValid(pageable);
         return ResponseEntity.ok(response);
     }
 
@@ -49,20 +57,20 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> create(@RequestBody EventRequest request) {
-        ApiResponse<Void> response = service.create(request);
+    public ResponseEntity<ApiResponse<String>> create(@RequestBody EventRequest request) {
+        ApiResponse<String> response = service.create(request);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<EventPreview>> update(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<EventPreview>> update(@PathVariable String id,
                                                             @RequestBody EventRequest request){
         ApiResponse<EventPreview> response = service.update(id, request);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}/change-status")
-    public ResponseEntity<ApiResponse<Void>> changeStatus(@PathVariable Long id,
+    public ResponseEntity<ApiResponse<Void>> changeStatus(@PathVariable String id,
                                                           @RequestParam String oldStatus,
                                                           @RequestParam String newStatus){
         ApiResponse<Void> response = service.changeStatus(id, oldStatus, newStatus);
@@ -70,7 +78,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String id){
         ApiResponse<Void> response = service.delete(id);
         return ResponseEntity.ok(response);
     }

@@ -47,6 +47,7 @@ public class EventMapper {
                 .startTime(!event.getShows().isEmpty() ? event.getShows().get(0).getStartTime() : null)
                 .endTime(!event.getShows().isEmpty() ? event.getShows().get(0).getEndTime() : null)
                 .lowestPrice(!event.getShows().isEmpty() ? event.getShows().get(0).getBasePrice() : 0)
+                .status(event.getStatus().toString())
                 .build();
     }
 

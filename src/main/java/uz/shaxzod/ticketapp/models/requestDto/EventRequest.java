@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @ToString
 public class EventRequest {
     @NotNull(message = "Venue can't be null")
-    private Long venueId;
+    private String venueId;
     @NotNull(message = "Title can't be null")
     private String title;
     private String description;

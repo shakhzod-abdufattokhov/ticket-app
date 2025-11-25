@@ -29,22 +29,24 @@ import uz.shaxzod.ticketapp.repository.VenueRepository;
 import uz.shaxzod.ticketapp.service.EventService;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class EventServiceImpl implements EventService {
+    private static final Integer GAP_TIME = 2;
+
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
     private final VenueRepository venueRepository;
 
     @Override
-    public ApiResponse<Void> create(EventRequest request) {
+    public ApiResponse<String> create(EventRequest request) {
         log.info("Service - Event create request {}", request.toString());
         Venue venue = venueRepository.findById(request.getVenueId()).orElseThrow(
                 () -> new CustomNotFoundException("Venue not found with id: " + request.getVenueId()));
-
         if (!EventType.contains(request.getType())) {
             throw new CustomBadRequestException("No Event type like: " + request.getType());
         }
@@ -52,13 +54,13 @@ public class EventServiceImpl implements EventService {
         Event event = eventMapper.toEntity(request);
         event.setVenue(venue);
 
-        eventRepository.save(event);
+        Event saved = eventRepository.save(event);
         log.info("Event saved successfully");
-        return ApiResponse.success("Created successfully");
+        return ApiResponse.success(saved.getId() ,"Created successfully");
     }
 
     @Override
-    public ApiResponse<EventDetailedResponse> getById(Long id) {
+    public ApiResponse<EventDetailedResponse> getById(String id) {
         log.info("Service - Event Get By id request {}", id);
         Event event = eventRepository.findById(id).orElseThrow(
                 () -> new CustomNotFoundException("Event not found with id: " + id));
@@ -69,6 +71,24 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public ApiResponse<PaginationResponse> getAll(Pageable pageable) {
+        log.info("Service - Event get all request");
+        Page<Event> eventsPage = eventRepository.findAll(pageable);
+        if (eventsPage.isEmpty()) {
+            log.info("Events are not exist in db");
+            return ApiResponse.success(new PaginationResponse(), "Events are not exist");
+        }
+
+        List<EventPreview> eventPreviews = eventMapper.toPreviewList(eventsPage.getContent());
+        PaginationResponse response = new PaginationResponse(
+                eventsPage.getNumberOfElements(),
+                eventsPage.getTotalPages(),
+                eventPreviews);
+
+        return ApiResponse.success(response);
+    }
+
+    @Override
+    public ApiResponse<PaginationResponse> getAllValid(Pageable pageable) {
         log.info("Service - Event get all request");
         Page<Event> eventsPage = eventRepository.findAll(LocalDate.now(), pageable);
         if (eventsPage.isEmpty()) {
@@ -107,7 +127,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ApiResponse<Void> changeStatus(Long id, String currentStatus, String newStatus) {
+    public ApiResponse<Void> changeStatus(String id, String currentStatus, String newStatus) {
         log.info("Service - Changing status of event - {}, from {} to {}", id, currentStatus, newStatus);
         if (!EventStatus.contains(currentStatus) && !EventStatus.contains(newStatus)) {
             throw new CustomBadRequestException("One of the Status is not valid");
@@ -143,7 +163,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ApiResponse<EventPreview> update(Long id, EventRequest request) {
+    public ApiResponse<EventPreview> update(String id, EventRequest request) {
         log.info("Event update request {}", request.toString());
         Event event = eventRepository.findById(id).orElseThrow(
                 () -> new CustomNotFoundException("Event not found with id: "+ id));
@@ -167,7 +187,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ApiResponse<Void> delete(Long id) {
+    public ApiResponse<Void> delete(String id) {
         boolean exists = eventRepository.existsById(id);
         if(!exists){
             throw new CustomNotFoundException("Event not found with id: "+id);
