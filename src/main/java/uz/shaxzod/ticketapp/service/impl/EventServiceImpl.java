@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import uz.shaxzod.ticketapp.exceptions.CustomBadRequestException;
 import uz.shaxzod.ticketapp.exceptions.CustomNotFoundException;
 import uz.shaxzod.ticketapp.mapper.EventMapper;
+import uz.shaxzod.ticketapp.mapper.ShowMapper;
 import uz.shaxzod.ticketapp.models.entity.Event;
 import uz.shaxzod.ticketapp.models.entity.Show;
 import uz.shaxzod.ticketapp.models.entity.Venue;
@@ -20,10 +21,7 @@ import uz.shaxzod.ticketapp.models.enums.EventType;
 import uz.shaxzod.ticketapp.models.enums.Language;
 import uz.shaxzod.ticketapp.models.filter.EventFilterDto;
 import uz.shaxzod.ticketapp.models.requestDto.EventRequest;
-import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
-import uz.shaxzod.ticketapp.models.responseDto.EventDetailedResponse;
-import uz.shaxzod.ticketapp.models.responseDto.EventPreview;
-import uz.shaxzod.ticketapp.models.responseDto.PaginationResponse;
+import uz.shaxzod.ticketapp.models.responseDto.*;
 import uz.shaxzod.ticketapp.repository.EventRepository;
 import uz.shaxzod.ticketapp.repository.VenueRepository;
 import uz.shaxzod.ticketapp.service.EventService;
@@ -36,11 +34,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class EventServiceImpl implements EventService {
-    private static final Integer GAP_TIME = 2;
-
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
     private final VenueRepository venueRepository;
+    private final ShowMapper showMapper;
 
     @Override
     public ApiResponse<String> create(EventRequest request) {
@@ -65,6 +62,9 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(id).orElseThrow(
                 () -> new CustomNotFoundException("Event not found with id: " + id));
         EventDetailedResponse response = eventMapper.toDetailedResponse(event);
+
+        List<ShowResponse> showResponses = showMapper.toResponseList(event.getShows());
+        response.setShowResponseList(showResponses);
         log.info("Event found with id: {}, {}", id, response.toString());
         return ApiResponse.success(response);
     }

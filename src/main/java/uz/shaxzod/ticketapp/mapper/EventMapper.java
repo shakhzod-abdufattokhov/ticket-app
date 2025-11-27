@@ -14,7 +14,6 @@ import java.util.List;
 @Component
 public class EventMapper {
 
-
     public Event toEntity(EventRequest request) {
         return Event.builder()
                 .title(request.getTitle() != null ? request.getTitle() : "")
@@ -28,6 +27,7 @@ public class EventMapper {
 
     public EventDetailedResponse toDetailedResponse(Event event) {
         return EventDetailedResponse.builder()
+                .id(event.getId())
                 .title(event.getTitle())
                 .description(event.getDescription())
                 .lowestPrice(!event.getShows().isEmpty() ? event.getShows().get(0).getBasePrice() : 0)

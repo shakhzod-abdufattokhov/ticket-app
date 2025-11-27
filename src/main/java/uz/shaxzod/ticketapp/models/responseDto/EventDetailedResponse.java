@@ -2,7 +2,6 @@ package uz.shaxzod.ticketapp.models.responseDto;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -10,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 public class EventDetailedResponse {
     private String id;
     private String title;

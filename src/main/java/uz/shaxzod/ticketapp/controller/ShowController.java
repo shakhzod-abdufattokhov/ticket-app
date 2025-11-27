@@ -1,8 +1,6 @@
 package uz.shaxzod.ticketapp.controller;
 
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +52,4 @@ public class ShowController {
         ApiResponse<Void> response = service.delete(id);
         return ResponseEntity.ok(response);
     }
-
-    
 }

@@ -30,6 +30,8 @@ public class ShowServiceImp implements ShowService {
     private final EventRepository eventRepository;
     private final ShowRepository showRepository;
     private final ShowMapper showMapper;
+
+    private static final Integer GAP_TIME = 2;
     @Override
     public ApiResponse<String> create(ShowRequest request) {
         log.info("Service - Create show request {}", request.toString());
