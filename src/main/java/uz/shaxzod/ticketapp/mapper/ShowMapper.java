@@ -1,7 +1,9 @@
 package uz.shaxzod.ticketapp.mapper;
 
 import org.springframework.stereotype.Component;
+import uz.shaxzod.ticketapp.models.entity.Seat;
 import uz.shaxzod.ticketapp.models.entity.Show;
+import uz.shaxzod.ticketapp.models.requestDto.CreateSeatsRequest;
 import uz.shaxzod.ticketapp.models.requestDto.ShowRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ShowResponse;
 
@@ -32,4 +34,6 @@ public class ShowMapper {
                 .map(this::toResponse)
                 .toList();
     }
+
+
 }

@@ -31,8 +31,9 @@ public class VenueServiceImpl implements VenueService {
         log.info("Service - Creating Venue request: {}", request);
 
         Venue venue = venueMapper.toEntity(request);
+        Venue savedVenue = venueRepository.save(venue);
         log.info("Service - Venue saved successfully");
-        return ApiResponse.success(venue.getId(), "Created successfully");
+        return ApiResponse.success(savedVenue.getId(), "Created successfully");
     }
 
     @Override

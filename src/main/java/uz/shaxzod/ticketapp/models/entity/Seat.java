@@ -2,10 +2,7 @@ package uz.shaxzod.ticketapp.models.entity;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uz.shaxzod.ticketapp.models.enums.SeatType;
 
 import java.time.LocalDateTime;
@@ -15,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Builder
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,11 +22,13 @@ public class Seat {
     @Column(nullable = false)
     private String section;
     @Column(nullable = false)
-    private String row;
+    private Integer row;
     @Column(nullable = false)
     private Integer number;
     private SeatType type;
     private String seatLabel;
+    @ManyToOne
+    private SeatCategory category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
