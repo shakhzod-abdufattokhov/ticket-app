@@ -2,7 +2,9 @@ package uz.shaxzod.ticketapp.service;
 
 
 import uz.shaxzod.ticketapp.models.requestDto.CreateSeatsRequest;
+import uz.shaxzod.ticketapp.models.requestDto.SeatDeleteRequest;
 import uz.shaxzod.ticketapp.models.requestDto.SeatRequest;
+import uz.shaxzod.ticketapp.models.requestDto.SeatUpdateRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
 import uz.shaxzod.ticketapp.models.responseDto.SeatResponse;
 
@@ -16,10 +18,10 @@ public interface SeatService {
     ApiResponse<List<String>> createSeatsRow(CreateSeatsRequest request);
     ApiResponse<List<SeatResponse>> getAll(String venueId);
     ApiResponse<SeatResponse> getById(String seatId);
-    ApiResponse<SeatResponse> updateSeat(String seatId, SeatRequest request);
-    ApiResponse<Boolean> deleteSeat(String seatId);
-    ApiResponse<Boolean> deleteRowSeats(String venueId, String rowNumber);
-    ApiResponse<Boolean> deleteSeats(String venueId, List<String> seatsId);
+    ApiResponse<SeatResponse> updateSeat(String seatId, SeatUpdateRequest request);
+    ApiResponse<Void> deleteSeat(String seatId);
+    ApiResponse<Void> deleteRowSeats(String venueId, Integer rowNumber);
+    ApiResponse<Void> deleteSeats(SeatDeleteRequest request);
 
 //    ApiResponse<Boolean> markSeatsAsReserved(String showId, List<String> seatIds);
 //    ApiResponse<Boolean> releaseReservedSeats(String showId, List<String> seatIds);

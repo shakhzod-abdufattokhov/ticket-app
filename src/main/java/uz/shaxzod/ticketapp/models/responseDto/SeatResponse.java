@@ -10,9 +10,8 @@ import lombok.*;
 public class SeatResponse {
     private String id;
     private String section;
-    private String row;
+    private Integer row;
     private Integer number;
     private String type;
-    private Long price;
     private String seatLabel;
 }
