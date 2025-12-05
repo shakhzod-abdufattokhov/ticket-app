@@ -20,8 +20,6 @@ public class Seat {
     @ManyToOne
     private Venue venue;
     @Column(nullable = false)
-    private String section;
-    @Column(nullable = false)
     private Integer row;
     @Column(nullable = false)
     private Integer number;
@@ -29,6 +27,8 @@ public class Seat {
     private String seatLabel;
     @ManyToOne
     private SeatCategory category;
+    @ManyToOne
+    private Sector sector;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

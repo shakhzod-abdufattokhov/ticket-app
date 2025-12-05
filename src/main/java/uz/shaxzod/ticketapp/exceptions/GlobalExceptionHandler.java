@@ -3,6 +3,7 @@ package uz.shaxzod.ticketapp.exceptions;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -112,6 +113,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ApiErrorResponse handleSmsApiServerException(SmsApiServerException exception) {
         return new ApiErrorResponse(exception.getMessage());
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ApiErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException ex){
+        return new ApiErrorResponse(ex.getMessage());
+    }
+
 
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
 //    @ExceptionHandler(MalformedJwtException.class)

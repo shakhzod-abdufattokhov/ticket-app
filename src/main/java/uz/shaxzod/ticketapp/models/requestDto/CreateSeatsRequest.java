@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 public class CreateSeatsRequest {
     private String venueId;
-    private String section;
+    private String sectorId;
     private Integer row;
     private Integer numOfSeats;
 }

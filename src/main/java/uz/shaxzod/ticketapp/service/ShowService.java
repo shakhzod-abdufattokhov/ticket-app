@@ -3,6 +3,7 @@ package uz.shaxzod.ticketapp.service;
 
 import org.springframework.data.domain.Pageable;
 import uz.shaxzod.ticketapp.models.requestDto.ShowRequest;
+import uz.shaxzod.ticketapp.models.requestDto.ShowSeatsRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
 import uz.shaxzod.ticketapp.models.responseDto.PaginationResponse;
 import uz.shaxzod.ticketapp.models.responseDto.ShowResponse;
@@ -15,4 +16,7 @@ public interface ShowService {
     ApiResponse<PaginationResponse> getAllValidByEventId(String eventId, Pageable pageable);
     ApiResponse<ShowResponse> update(String id, ShowRequest request);
     ApiResponse<Void> delete(String id);
+
+    ApiResponse<String> addSeats(String id, ShowSeatsRequest request);
+
 }

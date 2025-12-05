@@ -21,6 +21,8 @@ public class Show {
     private String id;
     @ManyToOne
     private Event event;
+    @ManyToOne
+    private Venue venue;
     private LocalDate showDay;
     private LocalTime startTime;
     private LocalTime endTime;

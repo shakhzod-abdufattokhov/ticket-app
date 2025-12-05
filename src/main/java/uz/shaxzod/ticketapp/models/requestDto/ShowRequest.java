@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @Setter
 @ToString
 public class ShowRequest {
+    private String venueId;
     private String eventId;
     private LocalDate day;
     private Long basePrice;

@@ -10,12 +10,15 @@ import uz.shaxzod.ticketapp.exceptions.CustomNotFoundException;
 import uz.shaxzod.ticketapp.mapper.ShowMapper;
 import uz.shaxzod.ticketapp.models.entity.Event;
 import uz.shaxzod.ticketapp.models.entity.Show;
+import uz.shaxzod.ticketapp.models.entity.Venue;
 import uz.shaxzod.ticketapp.models.requestDto.ShowRequest;
+import uz.shaxzod.ticketapp.models.requestDto.ShowSeatsRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
 import uz.shaxzod.ticketapp.models.responseDto.PaginationResponse;
 import uz.shaxzod.ticketapp.models.responseDto.ShowResponse;
 import uz.shaxzod.ticketapp.repository.EventRepository;
 import uz.shaxzod.ticketapp.repository.ShowRepository;
+import uz.shaxzod.ticketapp.repository.VenueRepository;
 import uz.shaxzod.ticketapp.service.ShowService;
 
 import java.time.LocalDate;
@@ -28,6 +31,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ShowServiceImp implements ShowService {
     private final EventRepository eventRepository;
+    private final VenueRepository venueRepository;
     private final ShowRepository showRepository;
     private final ShowMapper showMapper;
 
@@ -38,10 +42,13 @@ public class ShowServiceImp implements ShowService {
         Event event = eventRepository.findById(request.getEventId())
                 .orElseThrow(() -> new CustomNotFoundException("Event not found with id: " + request.getEventId()));
 
+        Venue venue = venueRepository.findById(request.getVenueId()).orElseThrow(
+                () -> new CustomNotFoundException("Venue not found with id: "+ request.getVenueId()));
         validateShowTime(request, event);
 
         Show show = showMapper.toEntity(request);
         show.setEvent(event);
+        show.setVenue(venue);
         Show savedShow = showRepository.save(show);
         log.info("Show created successfully");
         return ApiResponse.success(savedShow.getId(), "Show created successfully");
@@ -129,6 +136,15 @@ public class ShowServiceImp implements ShowService {
         }
         showRepository.deleteById(id);
         return ApiResponse.success("Deleted successfully");
+    }
+
+    @Override
+    public ApiResponse<String> addSeats(String id, ShowSeatsRequest request) {
+        log.info("Adding seats to show request: {}", request);
+        Show show = showRepository.findById(id).orElseThrow(
+                () -> new CustomNotFoundException("Show not found with id: " + id));
+
+        return null;
     }
 
     private void isEventExist(String eventId) {

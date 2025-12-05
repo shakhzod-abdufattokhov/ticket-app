@@ -9,6 +9,7 @@ import uz.shaxzod.ticketapp.exceptions.CustomNotFoundException;
 import uz.shaxzod.ticketapp.mapper.SeatMapper;
 import uz.shaxzod.ticketapp.mapper.ShowMapper;
 import uz.shaxzod.ticketapp.models.entity.Seat;
+import uz.shaxzod.ticketapp.models.entity.Sector;
 import uz.shaxzod.ticketapp.models.entity.Venue;
 import uz.shaxzod.ticketapp.models.enums.SeatType;
 import uz.shaxzod.ticketapp.models.requestDto.CreateSeatsRequest;
@@ -18,6 +19,7 @@ import uz.shaxzod.ticketapp.models.requestDto.SeatUpdateRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
 import uz.shaxzod.ticketapp.models.responseDto.SeatResponse;
 import uz.shaxzod.ticketapp.repository.SeatRepository;
+import uz.shaxzod.ticketapp.repository.SectorRepository;
 import uz.shaxzod.ticketapp.repository.VenueRepository;
 import uz.shaxzod.ticketapp.service.SeatService;
 
@@ -33,23 +35,20 @@ public class SeatServiceImpl implements SeatService {
     private final SeatRepository seatRepository;
     private final SeatMapper seatMapper;
     private final VenueRepository venueRepository;
-    private final ShowMapper showMapper;
-
-    @Override
-    public ApiResponse<List<SeatResponse>> getAllByShowId(String showId) {
-
-        return null;
-    }
+    private final SectorRepository sectorRepository;
 
     @Override
     public ApiResponse<String> createSeat(SeatRequest request) {
         log.info("Create seat request: "+ request.toString());
         Venue venue = venueRepository.findById(request.getVenueId()).orElseThrow(
                 () -> new CustomNotFoundException("Venue not found with id: " + request.getVenueId()));
+        Sector sector = sectorRepository.findById(request.getSectorId()).orElseThrow(
+                () -> new CustomNotFoundException("Sector not found with id: "+ request.getSectorId()));
 
         checkIsSeatExist(venue.getSeats(), request);
         Seat seat = seatMapper.toEntity(request);
         seat.setVenue(venue);
+        seat.setSector(sector);
 
         Seat save = seatRepository.save(seat);
         return ApiResponse.success(save.getId(), "Seat created successfully");
@@ -94,6 +93,12 @@ public class SeatServiceImpl implements SeatService {
                 () -> new CustomNotFoundException("Seat not found with id: " + seatId));
         SeatResponse seatResponse = seatMapper.toResponse(seat);
         return ApiResponse.success(seatResponse);
+    }
+
+    @Override
+    public ApiResponse<List<SeatResponse>> getAllByShowId(String showId) {
+
+        return null;
     }
 
     @Override
@@ -147,7 +152,7 @@ public class SeatServiceImpl implements SeatService {
         boolean isExist =  seats.stream()
                 .anyMatch(seat -> Objects.equals(seat.getRow(), request.getRow()) &&
                         Objects.equals(seat.getNumber(), request.getNumber()) &&
-                        Objects.equals(seat.getSection(), request.getSection()));
+                        Objects.equals(seat.getSector().getId(), request.getSectorId()));
 
         if(isExist){
             throw new CustomAlreadyExistException(
@@ -156,7 +161,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     private void checkIsRowExist(CreateSeatsRequest request) {
-        boolean exists = seatRepository.existsByVenueIdAndSectionAndRow(request.getVenueId(), request.getSection(), request.getRow());
+        boolean exists = seatRepository.existsByVenueIdAndSectorIdAndRow(request.getVenueId(), request.getSectorId(), request.getRow());
         if(exists){
             throw new CustomAlreadyExistException("This row is already exist, for recreating it with seats, please delete it!");
         }
@@ -166,13 +171,15 @@ public class SeatServiceImpl implements SeatService {
         if(request.getNumOfSeats() < 1){
             return Collections.emptyList();
         }
+        Sector sector = sectorRepository.findById(request.getSectorId()).orElseThrow(
+                () -> new CustomNotFoundException("Sector not found with id: "+ request.getSectorId()));
 
         List<Seat> seats = new ArrayList<>();
         for(int i = 1; i<=request.getNumOfSeats(); i++){
             seats.add(
                     Seat.builder()
                             .venue(venue)
-                            .section(request.getSection())
+                            .sector(sector)
                             .row(request.getRow())
                             .number(i)
                             .type(SeatType.REGULAR) // default type is regular

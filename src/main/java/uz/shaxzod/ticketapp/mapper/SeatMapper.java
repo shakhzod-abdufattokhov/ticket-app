@@ -13,7 +13,6 @@ import java.util.List;
 public class SeatMapper {
     public Seat toEntity(SeatRequest request) {
         return Seat.builder()
-                .section(request.getSection())
                 .row(request.getRow())
                 .number(request.getNumber())
                 .type(SeatType.of(request.getType()))
@@ -26,7 +25,8 @@ public class SeatMapper {
         return SeatResponse.builder()
                 .id(seat.getId())
                 .number(seat.getNumber())
-                .section(seat.getSection())
+                .sectorId(seat.getSector().getId())
+                .sectorName(seat.getSector().getName())
                 .row(seat.getRow())
                 .type(seat.getType().toString())
                 .seatLabel(seat.getSeatLabel())

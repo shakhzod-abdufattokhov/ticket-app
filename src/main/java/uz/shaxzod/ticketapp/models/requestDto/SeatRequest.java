@@ -11,7 +11,7 @@ import lombok.*;
 public class SeatRequest {
     @NotNull(message = "Venue id can not be null")
     private String venueId;
-    private String section;
+    private String sectorId;
     @NotNull(message = "Row can not be null")
     private Integer row;
     @NotNull(message = "Order number of seat can not be null")

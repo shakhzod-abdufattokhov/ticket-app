@@ -12,8 +12,6 @@ import java.util.List;
 
 public interface SeatService {
 
-    ApiResponse<List<SeatResponse>> getAllByShowId(String showId);
-
     ApiResponse<String> createSeat(SeatRequest request);
     ApiResponse<List<String>> createSeatsRow(CreateSeatsRequest request);
     ApiResponse<List<SeatResponse>> getAll(String venueId);
@@ -22,6 +20,9 @@ public interface SeatService {
     ApiResponse<Void> deleteSeat(String seatId);
     ApiResponse<Void> deleteRowSeats(String venueId, Integer rowNumber);
     ApiResponse<Void> deleteSeats(SeatDeleteRequest request);
+
+    // Show seats
+    ApiResponse<List<SeatResponse>> getAllByShowId(String showId);
 
 //    ApiResponse<Boolean> markSeatsAsReserved(String showId, List<String> seatIds);
 //    ApiResponse<Boolean> releaseReservedSeats(String showId, List<String> seatIds);

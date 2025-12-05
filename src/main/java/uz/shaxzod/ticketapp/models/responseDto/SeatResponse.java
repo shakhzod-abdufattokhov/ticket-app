@@ -9,7 +9,8 @@ import lombok.*;
 @Builder
 public class SeatResponse {
     private String id;
-    private String section;
+    private String sectorName;
+    private String sectorId;
     private Integer row;
     private Integer number;
     private String type;
