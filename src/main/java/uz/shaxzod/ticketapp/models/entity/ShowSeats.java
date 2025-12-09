@@ -25,8 +25,8 @@ public class ShowSeats {
     @JoinColumn(name = "seat_id")
     private Seat seat;
 
-    @Enumerated(EnumType.STRING)
-    private SeatType type;
+    @ManyToOne
+    private SeatCategory category;
     private Long price; // tiyin
     private boolean isOrdered;
     private LocalDateTime createdAt;

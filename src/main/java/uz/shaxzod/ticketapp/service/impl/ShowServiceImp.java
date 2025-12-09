@@ -36,6 +36,8 @@ public class ShowServiceImp implements ShowService {
     private final ShowMapper showMapper;
 
     private static final Integer GAP_TIME = 2;
+    private final ShowSeatsService showSeatsService;
+
     @Override
     public ApiResponse<String> create(ShowRequest request) {
         log.info("Service - Create show request {}", request.toString());
@@ -139,12 +141,13 @@ public class ShowServiceImp implements ShowService {
     }
 
     @Override
-    public ApiResponse<String> addSeats(String id, ShowSeatsRequest request) {
+    public ApiResponse<Void> addSeats(String id, ShowSeatsRequest request) {
         log.info("Adding seats to show request: {}", request);
         Show show = showRepository.findById(id).orElseThrow(
                 () -> new CustomNotFoundException("Show not found with id: " + id));
 
-        return null;
+        showSeatsService.create(show,request);
+        return ApiResponse.success("Seats are added successfully");
     }
 
     private void isEventExist(String eventId) {
