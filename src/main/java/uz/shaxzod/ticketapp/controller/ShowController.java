@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.shaxzod.ticketapp.models.requestDto.ShowRequest;
+import uz.shaxzod.ticketapp.models.requestDto.ShowSeatsRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
 import uz.shaxzod.ticketapp.models.responseDto.PaginationResponse;
 import uz.shaxzod.ticketapp.models.responseDto.ShowResponse;
@@ -37,6 +38,13 @@ public class ShowController {
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody ShowRequest request){
         ApiResponse<String> response = service.create(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{id}/add-seats")
+    public ResponseEntity<ApiResponse<Void>> addSeats(@PathVariable String id,
+                                                      @RequestBody ShowSeatsRequest request){
+        ApiResponse<Void> response = service.addSeats(id, request);
         return ResponseEntity.ok(response);
     }
 

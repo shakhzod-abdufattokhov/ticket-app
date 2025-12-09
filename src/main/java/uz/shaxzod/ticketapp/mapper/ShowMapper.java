@@ -13,7 +13,7 @@ import java.util.List;
 public class ShowMapper {
     public Show toEntity(ShowRequest request) {
         return Show.builder()
-                .basePrice(request.getBasePrice())
+                .basePrice(request.getBasePrice() * 100) //converting to tiyin
                 .showDay(request.getDay())
                 .startTime(request.getStartTime())
                 .endTime(request.getEndTime())

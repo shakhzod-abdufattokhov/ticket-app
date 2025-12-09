@@ -3,6 +3,7 @@ package uz.shaxzod.ticketapp.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uz.shaxzod.ticketapp.exceptions.CustomIllegalArgumentException;
 import uz.shaxzod.ticketapp.exceptions.CustomNotFoundException;
 import uz.shaxzod.ticketapp.models.entity.Seat;
 import uz.shaxzod.ticketapp.models.entity.SeatCategory;
@@ -37,7 +38,7 @@ public class ShowSeatsService {
                         .show(show)
                         .seat(seat)
                         .category(category)
-                        .price(request.getPrice())
+                        .price(request.getPrice() * 100) // converting to tiyin
                         .isOrdered(false)
                         .build()
                 ).toList();
@@ -82,7 +83,7 @@ public class ShowSeatsService {
         );
 
         if (!existing.isEmpty()) {
-            throw new IllegalStateException("Some seats already assigned to this show");
+            throw new CustomIllegalArgumentException("Some seats already assigned to this show");
         }
     }
 

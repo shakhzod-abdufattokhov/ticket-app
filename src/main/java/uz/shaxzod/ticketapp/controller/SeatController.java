@@ -33,6 +33,12 @@ public class SeatController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/by-show")
+    public ResponseEntity<ApiResponse<List<SeatResponse>>> getAllByShow(@RequestParam String showId){
+        ApiResponse<List<SeatResponse>> response = seatService.getAllByShowId(showId);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid SeatRequest request){
         ApiResponse<String> response = seatService.createSeat(request);
