@@ -1,3 +1,4 @@
+/*
 package uz.shaxzod.ticketapp.models.enums;
 
 import uz.shaxzod.ticketapp.exceptions.CustomBadRequestException;
@@ -17,3 +18,4 @@ public enum SeatType{
         }
     }
 }
+*/

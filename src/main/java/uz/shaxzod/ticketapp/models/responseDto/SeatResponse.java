@@ -13,6 +13,6 @@ public class SeatResponse {
     private String sectorId;
     private Integer row;
     private Integer number;
-    private String type;
     private String seatLabel;
+    private Long price;
 }

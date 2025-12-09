@@ -7,11 +7,10 @@ import uz.shaxzod.ticketapp.exceptions.CustomAlreadyExistException;
 import uz.shaxzod.ticketapp.exceptions.CustomBadRequestException;
 import uz.shaxzod.ticketapp.exceptions.CustomNotFoundException;
 import uz.shaxzod.ticketapp.mapper.SeatMapper;
-import uz.shaxzod.ticketapp.mapper.ShowMapper;
 import uz.shaxzod.ticketapp.models.entity.Seat;
 import uz.shaxzod.ticketapp.models.entity.Sector;
+import uz.shaxzod.ticketapp.models.entity.ShowSeats;
 import uz.shaxzod.ticketapp.models.entity.Venue;
-import uz.shaxzod.ticketapp.models.enums.SeatType;
 import uz.shaxzod.ticketapp.models.requestDto.CreateSeatsRequest;
 import uz.shaxzod.ticketapp.models.requestDto.SeatDeleteRequest;
 import uz.shaxzod.ticketapp.models.requestDto.SeatRequest;
@@ -36,6 +35,7 @@ public class SeatServiceImpl implements SeatService {
     private final SeatMapper seatMapper;
     private final VenueRepository venueRepository;
     private final SectorRepository sectorRepository;
+    private final ShowSeatsService showSeatsService;
 
     @Override
     public ApiResponse<String> createSeat(SeatRequest request) {
@@ -97,8 +97,13 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     public ApiResponse<List<SeatResponse>> getAllByShowId(String showId) {
-
-        return null;
+        log.info("Getting Seats by showId: {}", showId);
+        List<ShowSeats> showSeats = showSeatsService.getAllByShowId(showId);
+        if(showSeats.isEmpty()){
+            return ApiResponse.success(Collections.emptyList());
+        }
+        List<SeatResponse> seatResponses = seatMapper.showSeatsToSeatResponseList(showSeats);
+        return ApiResponse.success(seatResponses);
     }
 
     @Override
@@ -182,7 +187,6 @@ public class SeatServiceImpl implements SeatService {
                             .sector(sector)
                             .row(request.getRow())
                             .number(i)
-                            .type(SeatType.REGULAR) // default type is regular
                             .build()
             );
         }

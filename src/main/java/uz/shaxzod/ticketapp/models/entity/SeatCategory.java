@@ -2,7 +2,7 @@ package uz.shaxzod.ticketapp.models.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import uz.shaxzod.ticketapp.models.enums.SeatType;
+
 
 @Entity
 @AllArgsConstructor
@@ -16,7 +16,6 @@ public class SeatCategory {
     private String id;
     @ManyToOne
     private Venue venue;
-    @Enumerated(EnumType.STRING)
-    private SeatType type;
+    private String type;
     private Long price;
 }

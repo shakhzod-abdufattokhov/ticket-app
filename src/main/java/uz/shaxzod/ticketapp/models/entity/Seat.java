@@ -1,9 +1,7 @@
 package uz.shaxzod.ticketapp.models.entity;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.*;
-import uz.shaxzod.ticketapp.models.enums.SeatType;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +21,6 @@ public class Seat {
     private Integer row;
     @Column(nullable = false)
     private Integer number;
-    private SeatType type;
     private String seatLabel;
     @ManyToOne
     private SeatCategory category;

@@ -2,7 +2,6 @@ package uz.shaxzod.ticketapp.models.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import uz.shaxzod.ticketapp.models.enums.SeatType;
 
 import java.time.LocalDateTime;
 

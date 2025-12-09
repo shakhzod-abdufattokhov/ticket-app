@@ -2,7 +2,8 @@ package uz.shaxzod.ticketapp.mapper;
 
 import org.springframework.stereotype.Component;
 import uz.shaxzod.ticketapp.models.entity.Seat;
-import uz.shaxzod.ticketapp.models.enums.SeatType;
+import uz.shaxzod.ticketapp.models.entity.SeatCategory;
+import uz.shaxzod.ticketapp.models.entity.ShowSeats;
 import uz.shaxzod.ticketapp.models.requestDto.SeatRequest;
 import uz.shaxzod.ticketapp.models.requestDto.SeatUpdateRequest;
 import uz.shaxzod.ticketapp.models.responseDto.SeatResponse;
@@ -15,7 +16,6 @@ public class SeatMapper {
         return Seat.builder()
                 .row(request.getRow())
                 .number(request.getNumber())
-                .type(SeatType.of(request.getType()))
                 .seatLabel(request.getSeatLabel())
                 .build();
 
@@ -28,7 +28,6 @@ public class SeatMapper {
                 .sectorId(seat.getSector().getId())
                 .sectorName(seat.getSector().getName())
                 .row(seat.getRow())
-                .type(seat.getType().toString())
                 .seatLabel(seat.getSeatLabel())
                 .build();
     }
@@ -40,8 +39,27 @@ public class SeatMapper {
     }
 
     public Seat toEntityUpdate(Seat seat, SeatUpdateRequest request) {
-        seat.setType(SeatType.of(request.getType()));
         seat.setSeatLabel(request.getSeatLabel());
         return seat;
+    }
+
+    public SeatResponse showSeatsToSeatResponse(ShowSeats showSeats){
+        Seat seat = showSeats.getSeat();
+        SeatCategory category = showSeats.getCategory();
+        return SeatResponse.builder()
+                .id(seat.getId())
+                .number(seat.getNumber())
+                .sectorId(seat.getSector().getId())
+                .sectorName(seat.getSector().getName())
+                .row(seat.getRow())
+                .seatLabel(seat.getSeatLabel())
+                .price(showSeats.getPrice() != null ? showSeats.getPrice() : category.getPrice())
+                .build();
+    }
+
+    public List<SeatResponse> showSeatsToSeatResponseList(List<ShowSeats> showSeats) {
+        return showSeats.stream()
+                .map(this::showSeatsToSeatResponse)
+                .toList();
     }
 }
