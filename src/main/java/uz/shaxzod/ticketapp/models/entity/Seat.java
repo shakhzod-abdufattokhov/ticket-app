@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +27,8 @@ public class Seat {
     private SeatCategory category;
     @ManyToOne
     private Sector sector;
+    @OneToMany
+    private List<ShowSeats> showSeats;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

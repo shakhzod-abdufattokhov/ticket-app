@@ -14,7 +14,6 @@ import uz.shaxzod.ticketapp.repository.SeatCategoryRepository;
 import uz.shaxzod.ticketapp.repository.SeatRepository;
 import uz.shaxzod.ticketapp.repository.ShowSeatsRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j

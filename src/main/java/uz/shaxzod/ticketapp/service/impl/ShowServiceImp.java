@@ -141,7 +141,7 @@ public class ShowServiceImp implements ShowService {
     }
 
     @Override
-    public ApiResponse<Void> addSeats(String id, ShowSeatsRequest request) {
+    public ApiResponse<Void> createShowSeats(String id, ShowSeatsRequest request) {
         log.info("Adding seats to show request: {}", request);
         Show show = showRepository.findById(id).orElseThrow(
                 () -> new CustomNotFoundException("Show not found with id: " + id));
