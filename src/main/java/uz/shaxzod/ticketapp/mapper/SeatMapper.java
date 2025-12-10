@@ -46,6 +46,9 @@ public class SeatMapper {
     public SeatResponse showSeatsToSeatResponse(ShowSeats showSeats){
         Seat seat = showSeats.getSeat();
         SeatCategory category = showSeats.getCategory();
+        if(category == null){
+            category = new SeatCategory();
+        }
         return SeatResponse.builder()
                 .id(seat.getId())
                 .number(seat.getNumber())
@@ -54,6 +57,7 @@ public class SeatMapper {
                 .row(seat.getRow())
                 .seatLabel(seat.getSeatLabel())
                 .price(showSeats.getPrice() != null ? showSeats.getPrice() : category.getPrice())
+                .categoryName(category.getType())
                 .build();
     }
 

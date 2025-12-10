@@ -23,6 +23,8 @@ public class Show {
     private Event event;
     @ManyToOne
     private Venue venue;
+    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ShowSeats> showSeats;
     private LocalDate showDay;
     private LocalTime startTime;
     private LocalTime endTime;

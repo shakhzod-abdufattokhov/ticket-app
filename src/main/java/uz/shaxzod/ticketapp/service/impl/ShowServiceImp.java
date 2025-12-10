@@ -18,6 +18,7 @@ import uz.shaxzod.ticketapp.models.responseDto.PaginationResponse;
 import uz.shaxzod.ticketapp.models.responseDto.ShowResponse;
 import uz.shaxzod.ticketapp.repository.EventRepository;
 import uz.shaxzod.ticketapp.repository.ShowRepository;
+import uz.shaxzod.ticketapp.repository.ShowSeatsRepository;
 import uz.shaxzod.ticketapp.repository.VenueRepository;
 import uz.shaxzod.ticketapp.service.ShowService;
 
@@ -34,8 +35,6 @@ public class ShowServiceImp implements ShowService {
     private final VenueRepository venueRepository;
     private final ShowRepository showRepository;
     private final ShowMapper showMapper;
-
-    private static final Integer GAP_TIME = 2;
     private final ShowSeatsService showSeatsService;
 
     @Override
@@ -51,9 +50,11 @@ public class ShowServiceImp implements ShowService {
         Show show = showMapper.toEntity(request);
         show.setEvent(event);
         show.setVenue(venue);
-        Show savedShow = showRepository.save(show);
+        show = showRepository.save(show);
+
+        showSeatsService.create(show, venue.getSeats());
         log.info("Show created successfully");
-        return ApiResponse.success(savedShow.getId(), "Show created successfully");
+        return ApiResponse.success(show.getId(), "Show created successfully");
     }
 
     @Override
@@ -141,12 +142,12 @@ public class ShowServiceImp implements ShowService {
     }
 
     @Override
-    public ApiResponse<Void> createShowSeats(String id, ShowSeatsRequest request) {
+    public ApiResponse<Void> updateShowSeats(String id, ShowSeatsRequest request) {
         log.info("Adding seats to show request: {}", request);
         Show show = showRepository.findById(id).orElseThrow(
                 () -> new CustomNotFoundException("Show not found with id: " + id));
 
-        showSeatsService.create(show,request);
+        showSeatsService.update(show,request);
         return ApiResponse.success("Seats are added successfully");
     }
 

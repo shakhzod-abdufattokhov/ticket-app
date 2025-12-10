@@ -15,4 +15,5 @@ public class SeatResponse {
     private Integer number;
     private String seatLabel;
     private Long price;
+    private String categoryName;
 }

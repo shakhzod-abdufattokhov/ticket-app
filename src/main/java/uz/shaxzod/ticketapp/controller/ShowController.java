@@ -41,10 +41,10 @@ public class ShowController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/{id}/show-seats")
-    public ResponseEntity<ApiResponse<Void>> createShowSeats(@PathVariable String id,
+    @PutMapping("/{id}/update/seats")
+    public ResponseEntity<ApiResponse<Void>> updateShowSets(@PathVariable String id,
                                                       @RequestBody ShowSeatsRequest request){
-        ApiResponse<Void> response = service.createShowSeats(id, request);
+        ApiResponse<Void> response = service.updateShowSeats(id, request);
         return ResponseEntity.ok(response);
     }
 

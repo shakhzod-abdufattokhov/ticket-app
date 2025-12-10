@@ -5,11 +5,11 @@ import org.springframework.stereotype.Repository;
 import uz.shaxzod.ticketapp.models.entity.ShowSeats;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ShowSeatsRepository extends JpaRepository<ShowSeats, String> {
-
     List<ShowSeats> findByShowId(String showId);
 
-    List<ShowSeats> findByShowIdAndSeatIdIn(String id, List<String> seatIds);
+    List<ShowSeats> findAllBySeatIdIn(List<String> seatIds);
 }

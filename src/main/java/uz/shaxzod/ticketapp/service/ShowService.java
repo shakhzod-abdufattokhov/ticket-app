@@ -17,6 +17,6 @@ public interface ShowService {
     ApiResponse<ShowResponse> update(String id, ShowRequest request);
     ApiResponse<Void> delete(String id);
 
-    ApiResponse<Void> createShowSeats(String id, ShowSeatsRequest request);
+    ApiResponse<Void> updateShowSeats(String id, ShowSeatsRequest request);
 
 }
