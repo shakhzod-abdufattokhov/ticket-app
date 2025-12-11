@@ -1,6 +1,5 @@
 package uz.shaxzod.ticketapp.models.entity;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
