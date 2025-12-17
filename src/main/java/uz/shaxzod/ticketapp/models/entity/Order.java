@@ -1,13 +1,11 @@
 package uz.shaxzod.ticketapp.models.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uz.shaxzod.ticketapp.models.enums.OrderStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "orders")
+@Builder
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,9 +21,11 @@ public class Order {
     @ManyToOne
     private User user;
     @ManyToOne
-    private Event show;
-    @ManyToOne
-    private Seat seat;
+    private Show show;
+//    @ManyToMany
+//    private List<Seat> seat;
+    @OneToMany
+    private List<ShowSeats> showSeats;
     private Long totalAmount;
     private OrderStatus status;
     private String idempotencyKey;

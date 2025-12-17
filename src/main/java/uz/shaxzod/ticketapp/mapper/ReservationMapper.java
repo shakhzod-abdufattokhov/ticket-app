@@ -11,7 +11,7 @@ public class ReservationMapper {
         return Reservation.builder()
                 .seatId(request.getSeatId())
                 .showId(request.getShowId())
-                .lifeTimeInMin(1L)
+                .lifeTimeInMin(15L)
                 .build();
     }
 }

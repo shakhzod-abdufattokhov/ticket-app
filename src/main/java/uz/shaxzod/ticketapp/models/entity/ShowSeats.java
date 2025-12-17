@@ -17,11 +17,9 @@ public class ShowSeats {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "show_id")
     private Show show;
 
     @ManyToOne
-    @JoinColumn(name = "seat_id")
     private Seat seat;
 
     @ManyToOne
