@@ -12,8 +12,6 @@ import uz.shaxzod.ticketapp.repository.ReservationHistoryRepository;
 import uz.shaxzod.ticketapp.repository.SeatRepository;
 import uz.shaxzod.ticketapp.repository.ShowRepository;
 
-import java.util.List;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -22,8 +20,9 @@ public class ReservationHistoryService {
     private final ShowRepository showRepository;
     private final SeatRepository seatRepository;
 
-    public String create(String userId, String showId, String seatId) {
+    public String create(String userId, String showId, String seatId, String reservationId) {
         log.info("Creating ReservationHistory request");
+
         Show show = showRepository.findById(showId).orElseThrow(
                 () -> new CustomNotFoundException("Show not found with id: " + showId));
 
@@ -37,25 +36,36 @@ public class ReservationHistoryService {
                 .eventName(show.getEvent().getTitle())
                 .seatLabel(seat.getSeatLabel())
                 .currentStatus(ReservStatus.HELD)
+                .reservationRedisId(reservationId)
                 .build();
         history = historyRepository.save(history);
         return history.getId();
     }
 
-    public String update(String showId, String seatId, ReservStatus status) {
+
+
+    public void updateHistory(String reservationId, ReservStatus status) {
         log.info("Update ReservationHistory request");
-        List<ReservationHistory> reservationHistory = historyRepository.findByShowIdAndSeatId(showId, seatId);
-        log.info("{}", reservationHistory);
-        if (reservationHistory.isEmpty()) {
-            throw new CustomNotFoundException("Reservation history not found");
-        }
 
-        ReservationHistory history = reservationHistory.get(0);
-        history.setOldStatus(history.getCurrentStatus());
-        history.setCurrentStatus(status);
+        ReservationHistory current = historyRepository
+                .findByReservationRedisId(reservationId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() ->
+                        new CustomNotFoundException("Reservation history not found"));
 
-        history = historyRepository.save(history);
-        return history.getId();
+        ReservationHistory audit = ReservationHistory.builder()
+                .reservationRedisId(current.getReservationRedisId())
+                .showId(current.getShowId())
+                .seatId(current.getSeatId())
+                .userId(current.getUserId())
+                .oldStatus(current.getCurrentStatus())
+                .currentStatus(status)
+                .build();
+
+        historyRepository.save(audit);
     }
+
+
 
 }

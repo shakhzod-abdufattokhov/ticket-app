@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ReservationHistoryRepository  extends JpaRepository<ReservationHistory, String> {
     List<ReservationHistory> findByShowIdAndSeatId(String showId, String seatId);
+
+    List<ReservationHistory> findByReservationRedisId(String reservationRedisId);
 }

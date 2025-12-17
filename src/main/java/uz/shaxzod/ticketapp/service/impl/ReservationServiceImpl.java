@@ -13,7 +13,6 @@ import uz.shaxzod.ticketapp.repository.redis.ReservationRepository;
 import uz.shaxzod.ticketapp.service.ReservationService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         Reservation reservation = mapper.toEntity(request);
         reservation = reservationRepository.save(reservation);
-        historyService.create(request.getUserId(), request.getShowId(), request.getSeatId());
+        historyService.create(request.getUserId(), request.getShowId(), request.getSeatId(), reservation.getId());
         return ApiResponse.success(reservation.getId(), "Seat is reserved");
     }
 
@@ -51,8 +50,15 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(
                 () -> new CustomNotFoundException("Reservation not found with id: "+ id));
         reservationRepository.deleteById(id);
-        historyService.update(reservation.getShowId(), reservation.getSeatId(), ReservStatus.CANCELLED);
+        historyService.updateHistory(reservation.getId(), ReservStatus.CANCELLED);
         return ApiResponse.success("Canceled successfully");
+    }
+
+    @Override
+    public void handleExpiration(String reservationId) {
+        log.info("Handling Reservation when expired request by redisReservationId: {}", reservationId);
+        historyService.updateHistory(reservationId, ReservStatus.EXPIRED);
+        ApiResponse.success("Expired");
     }
 
 }

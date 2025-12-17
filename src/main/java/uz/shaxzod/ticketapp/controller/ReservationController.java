@@ -9,8 +9,6 @@ import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
 import uz.shaxzod.ticketapp.repository.redis.ReservationRepository;
 import uz.shaxzod.ticketapp.service.ReservationService;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/reservations")
@@ -36,7 +34,7 @@ public class ReservationController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/cancel/{id}")
+    @PutMapping("/{id}/cancel")
     public ResponseEntity<ApiResponse<Void>> cancel(@PathVariable String id){
         ApiResponse<Void> response = service.cancel(id);
         return ResponseEntity.ok(response);
@@ -47,6 +45,4 @@ public class ReservationController {
         reservationRepository.deleteAll();
         return ResponseEntity.ok(null);
     }
-
-
 }
