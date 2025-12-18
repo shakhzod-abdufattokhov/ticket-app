@@ -20,13 +20,15 @@ public class Order {
     private String id;
     @ManyToOne
     private User user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "show_id")
     private Show show;
 //    @ManyToMany
 //    private List<Seat> seat;
     @OneToMany
     private List<ShowSeats> showSeats;
     private Long totalAmount;
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
     private String idempotencyKey;
     private LocalDateTime createdAt;

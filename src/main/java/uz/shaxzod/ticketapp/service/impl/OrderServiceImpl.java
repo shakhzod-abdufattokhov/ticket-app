@@ -42,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
             }
             reservations.add(reservation.get());
         }
+        log.info("Reservations are found: {}", reservations);
 
         Order order = createOrder(reservations);
 
@@ -50,8 +51,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private Order createOrder(List<Reservation> reservations) {
-        User user = userRepository.findById(reservations.get(0).getUserId()).orElseThrow(
-                () -> new CustomNotFoundException("User not found with id: "+ reservations.get(0).getUserId()));
+//        User user = userRepository.findById(reservations.get(0).getUserId()).orElseThrow(
+//                () -> new CustomNotFoundException("User not found with id: "+ reservations.get(0).getUserId())); ToDo
+
+        User user = null;
 
         Show show = showRepository.findById(reservations.get(0).getShowId()).orElseThrow(
                 () -> new CustomNotFoundException("Show not found with id: "+ reservations.get(0).getShowId()));

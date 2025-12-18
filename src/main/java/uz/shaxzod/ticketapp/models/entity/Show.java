@@ -20,6 +20,7 @@ public class Show {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @ManyToOne
+    @JoinColumn(name = "event_id")
     private Event event;
     @ManyToOne
     private Venue venue;
