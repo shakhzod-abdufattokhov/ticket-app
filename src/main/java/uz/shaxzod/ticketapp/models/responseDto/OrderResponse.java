@@ -2,6 +2,8 @@ package uz.shaxzod.ticketapp.models.responseDto;
 
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -13,6 +15,7 @@ public class OrderResponse {
     private String userSecondName;
     private String venueName;
     private String showTime;
-    private String seatNumber;
-    private String seatLabel;
+    private String showDay;
+    private List<Integer> seatNumber;
+    private List<String> seatLabel;
 }
