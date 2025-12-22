@@ -47,6 +47,4 @@ public class ReservationController {
         reservationRepository.deleteAll();
         return ResponseEntity.ok(null);
     }
-
-
 }

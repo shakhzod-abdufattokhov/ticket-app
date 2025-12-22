@@ -59,7 +59,4 @@ public class VenueController {
         ApiResponse<Void> response = service.delete(id);
         return ResponseEntity.ok(response);
     }
-
-
-
 }

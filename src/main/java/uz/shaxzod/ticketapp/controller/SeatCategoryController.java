@@ -46,5 +46,4 @@ public class SeatCategoryController {
         ApiResponse<Void> response = service.delete(id);
         return ResponseEntity.ok(response);
     }
-
 }
