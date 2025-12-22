@@ -23,4 +23,4 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("UPDATE User u SET u.failedLoginAttempts = ?1, u.lockTime = ?2 WHERE u.id = ?3")
     void updateFailedAttempts(int attempts, LocalDateTime lockTime, String userId);
 }
-}
+

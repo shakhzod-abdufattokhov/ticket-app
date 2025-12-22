@@ -58,8 +58,18 @@ public class User implements UserDetails {
 
     private LocalDateTime lastLoginAt;
 
-    @Version
-    private Long version;
+    @Column(nullable = false)
+    private Boolean enabled = true;
+
+    @Column(nullable = false)
+    private Boolean accountNonLocked = true;
+
+    @Column(nullable = false)
+    private Boolean accountNonExpired = true;
+
+    @Column(nullable = false)
+    private Boolean credentialsNonExpired = true;
+
 
     private Integer failedLoginAttempts = 0;
 

@@ -1,17 +1,23 @@
 package uz.shaxzod.ticketapp.exceptions;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.AccessDeniedException;
-//import org.springframework.security.authentication.BadCredentialsException;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,7 +26,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uz.shaxzod.ticketapp.models.responseDto.ApiErrorResponse;
 
-
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +35,7 @@ import java.util.concurrent.Executors;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -93,7 +100,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 //        executorService.submit(() -> telegramBotService.sendException(exception.getMessage()));
 //        return new ApiErrorResponse(exception.getMessage());
 //    }
-
+//
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //    @ExceptionHandler(Exception.class)
 //    public ApiErrorResponse handleException(Exception exception) {
@@ -120,14 +127,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(MalformedJwtException.class)
-//    public ApiErrorResponse handleMalformedJwtException(MalformedJwtException e) {
-//        return new ApiErrorResponse(e.getMessage());
-//    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MalformedJwtException.class)
+    public ApiErrorResponse handleMalformedJwtException(MalformedJwtException e) {
+        return new ApiErrorResponse(e.getMessage());
+    }
 
 
-/*    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UsernameNotFoundException.class)
     public ApiErrorResponse handleUsernameNotFoundException(UsernameNotFoundException e) {
         return new ApiErrorResponse("user name or password is incorrect");
@@ -138,29 +145,41 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ApiErrorResponse handleBadCredentialsException(BadCredentialsException e) {
         return new ApiErrorResponse("user name or password is incorrect");
     }
-*/
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    @ExceptionHandler(ExpiredJwtException.class)
-//    public ApiErrorResponse handleExpiredJwtException(ExpiredJwtException exception) {
-//        return new ApiErrorResponse(exception.getMessage());
-//    }
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ApiErrorResponse handleExpiredJwtException(ExpiredJwtException exception) {
+        return new ApiErrorResponse(exception.getMessage());
+    }
 
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    @ExceptionHandler(SignatureException.class)
-//    public ApiErrorResponse handleSignatureException(SignatureException exception) {
-//        return new ApiErrorResponse(exception.getMessage());
-//    }
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(SignatureException.class)
+    public ApiErrorResponse handleSignatureException(SignatureException exception) {
+        return new ApiErrorResponse(exception.getMessage());
+    }
 
-/*    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     public ApiErrorResponse handleAccessDeniedException(AccessDeniedException exception) {
         return new ApiErrorResponse(exception.getMessage());
-    }*/
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomIllegalArgumentException.class)
     public ApiErrorResponse handleCustomIllegalArgumentException(CustomIllegalArgumentException exception) {
         return new ApiErrorResponse(exception.getMessage());
+    }
+
+
+    @ExceptionHandler(TokenRefreshException.class)
+    public ResponseEntity<ApiErrorResponse> handleTokenRefreshException(TokenRefreshException ex) {
+        log.error("Token refresh exception: {}", ex.getMessage());
+        ApiErrorResponse errorResponse = new ApiErrorResponse();
+
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setData(HttpStatus.FORBIDDEN.value());
+        errorResponse.setDateTime(LocalDateTime.now());
+        errorResponse.setSuccess(false);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
 
 
