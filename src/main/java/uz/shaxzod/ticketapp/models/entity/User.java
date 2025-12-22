@@ -1,11 +1,7 @@
 package uz.shaxzod.ticketapp.models.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,9 +17,10 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
+@ToString
 @Table(name = "users", indexes = {
-        @Index(name = "idx_phone_number", columnList = "phoneNumber"),
-        @Index(name = "idx_email", columnList = "email")
+//        @Index(name = "idx_phone_number", columnList = "phoneNumber"),
+//        @Index(name = "idx_email", columnList = "email")
 })
 public class User implements UserDetails {
 

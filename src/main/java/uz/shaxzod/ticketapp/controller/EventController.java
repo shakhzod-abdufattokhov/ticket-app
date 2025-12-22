@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.shaxzod.ticketapp.models.filter.EventFilterDto;
 import uz.shaxzod.ticketapp.models.requestDto.EventRequest;
@@ -19,12 +20,15 @@ import uz.shaxzod.ticketapp.service.EventService;
 public class EventController {
     private final EventService service;
 
+
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<EventDetailedResponse>> get(@PathVariable String id) {
         ApiResponse<EventDetailedResponse> response = service.getById(id);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<ApiResponse<PaginationResponse>> getAll(@RequestParam(defaultValue = "0") Integer page,
                                                                   @RequestParam(defaultValue = "10") Integer size) {
@@ -33,6 +37,7 @@ public class EventController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/valid")
     public ResponseEntity<ApiResponse<PaginationResponse>> getAllValid(@RequestParam(defaultValue = "0") Integer page,
                                                                   @RequestParam(defaultValue = "10") Integer size) {
@@ -41,6 +46,7 @@ public class EventController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/by-type")
     public ResponseEntity<ApiResponse<PaginationResponse>> getAllByType(@RequestParam(defaultValue = "0") Integer page,
                                                                         @RequestParam(defaultValue = "10") Integer size,
@@ -50,18 +56,21 @@ public class EventController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<PaginationResponse>> search(@ModelAttribute EventFilterDto filterDto){
         ApiResponse<PaginationResponse> response = service.search(filterDto);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody EventRequest request) {
         ApiResponse<String> response = service.create(request);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<EventPreview>> update(@PathVariable String id,
                                                             @RequestBody EventRequest request){
@@ -69,6 +78,7 @@ public class EventController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @PutMapping("/{id}/change-status")
     public ResponseEntity<ApiResponse<Void>> changeStatus(@PathVariable String id,
                                                           @RequestParam String oldStatus,
@@ -77,6 +87,7 @@ public class EventController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String id){
         ApiResponse<Void> response = service.delete(id);

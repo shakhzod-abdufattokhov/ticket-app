@@ -2,6 +2,7 @@ package uz.shaxzod.ticketapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.shaxzod.ticketapp.models.requestDto.CategoryRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
@@ -16,24 +17,28 @@ import java.util.List;
 public class SeatCategoryController {
     private final SeatCategoryService service;
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> get(@PathVariable String id){
         ApiResponse<CategoryResponse> response = service.getById(id);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAll(@RequestParam String venueId){
         ApiResponse<List<CategoryResponse>> response = service.getAll(venueId);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody CategoryRequest request){
         ApiResponse<String> response = service.create(request);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> update(@PathVariable String id,
                                                     @RequestBody CategoryRequest request){
@@ -41,6 +46,7 @@ public class SeatCategoryController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String id){
         ApiResponse<Void> response = service.delete(id);

@@ -1,17 +1,19 @@
 package uz.shaxzod.ticketapp.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.shaxzod.ticketapp.config.JwtProperties;
 import uz.shaxzod.ticketapp.exceptions.CustomAlreadyExistException;
+import uz.shaxzod.ticketapp.exceptions.CustomLockedException;
 import uz.shaxzod.ticketapp.models.entity.RefreshToken;
 import uz.shaxzod.ticketapp.models.entity.User;
 import uz.shaxzod.ticketapp.models.enums.Role;
@@ -37,6 +39,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
     private final JwtProperties jwtProperties;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private static final int MAX_FAILED_ATTEMPTS = 5;
     private static final long LOCK_TIME_DURATION = 15; // minutes
@@ -66,7 +71,7 @@ public class AuthService {
         return generateAuthResponse(savedUser, httpRequest);
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = BadCredentialsException.class)
     public AuthResponse signIn(SignInRequest request, HttpServletRequest httpRequest) {
         log.info("Sign in attempt for phone: {}", request.getPhoneNumber());
 
@@ -80,7 +85,7 @@ public class AuthService {
                 user.setLockTime(null);
                 userRepository.save(user);
             } else {
-                throw new LockedException("Account is locked due to multiple failed login attempts. Try again later.");
+                throw new CustomLockedException("Account is locked due to multiple failed login attempts. Try again later.");
             }
         }
 
@@ -140,8 +145,10 @@ public class AuthService {
                 .build();
     }
 
-    private void handleFailedLogin(User user) {
-        int attempts = user.getFailedLoginAttempts() + 1;
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void handleFailedLogin(User user) {
+        Integer attempts = user.getFailedLoginAttempts() + 1;
+        log.info("Num of Attempts user failed for login: {}", attempts);
         user.setFailedLoginAttempts(attempts);
 
         if (attempts >= MAX_FAILED_ATTEMPTS) {
@@ -149,7 +156,8 @@ public class AuthService {
             user.setLockTime(LocalDateTime.now());
             log.warn("Account locked due to {} failed login attempts: {}", attempts, user.getPhoneNumber());
         }
-        userRepository.save(user);
+        User save = userRepository.save(user);
+        log.info("Saved user: {}", save);
     }
 
     private UserInfo mapToUserInfo(User user) {

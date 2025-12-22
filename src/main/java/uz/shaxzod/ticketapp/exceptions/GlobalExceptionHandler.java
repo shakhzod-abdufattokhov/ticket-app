@@ -134,17 +134,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ApiErrorResponse handleUsernameNotFoundException(UsernameNotFoundException e) {
-        return new ApiErrorResponse("user name or password is incorrect");
-    }
+//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+//    @ExceptionHandler(UsernameNotFoundException.class)
+//    public ApiErrorResponse handleUsernameNotFoundException(UsernameNotFoundException e) {
+//        return new ApiErrorResponse("user name or password is incorrect");
+//    }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(BadCredentialsException.class)
     public ApiErrorResponse handleBadCredentialsException(BadCredentialsException e) {
         return new ApiErrorResponse("user name or password is incorrect");
     }
+
+    @ExceptionHandler(CustomLockedException.class)
+    public ApiErrorResponse handleLockedException(CustomLockedException e) {
+        return new ApiErrorResponse(false, e.getMessage(), null, LocalDateTime.now());
+    }
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(ExpiredJwtException.class)
     public ApiErrorResponse handleExpiredJwtException(ExpiredJwtException exception) {

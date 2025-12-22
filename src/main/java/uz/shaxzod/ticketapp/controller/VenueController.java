@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.shaxzod.ticketapp.models.requestDto.VenueRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
@@ -20,12 +21,14 @@ import java.util.Map;
 public class VenueController {
     private final VenueService service;
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<VenueResponse>> get(@PathVariable String id){
         ApiResponse<VenueResponse> response = service.get(id);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<ApiResponse<PaginationResponse>> getAll(@RequestParam(defaultValue = "0") Integer page,
                                                   @RequestParam(defaultValue = "10") Integer size){
@@ -34,12 +37,14 @@ public class VenueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @PostMapping
     public ResponseEntity<ApiResponse<String>> create(@RequestBody @Valid VenueRequest request){
         ApiResponse<String> response = service.create(request);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @PatchMapping("/patch-update/{id}")
     public ResponseEntity<ApiResponse<VenueResponse>> patchUpdate(@PathVariable String id,
                                                   @RequestBody Map<String, Object> fields){
@@ -47,6 +52,7 @@ public class VenueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<VenueResponse>> update(@PathVariable String id,
                                              @RequestBody @Valid VenueRequest request){
@@ -54,6 +60,7 @@ public class VenueController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ORGINIZER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable String id){
         ApiResponse<Void> response = service.delete(id);
