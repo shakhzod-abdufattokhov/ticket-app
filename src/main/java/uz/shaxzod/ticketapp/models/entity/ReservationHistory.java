@@ -29,6 +29,7 @@ public class ReservationHistory {
     private ReservStatus currentStatus;
     @Enumerated(EnumType.STRING)
     private ReservStatus oldStatus;
+    private String reservationRedisId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
