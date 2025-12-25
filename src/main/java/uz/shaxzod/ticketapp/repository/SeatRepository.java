@@ -14,4 +14,6 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
     boolean existsAllById(String id);
 
     boolean existsByVenueIdAndSectorIdAndRow(String venueId, String sectorId, Integer row);
+
+    List<Seat> findAllByVenueId(String venueId);
 }

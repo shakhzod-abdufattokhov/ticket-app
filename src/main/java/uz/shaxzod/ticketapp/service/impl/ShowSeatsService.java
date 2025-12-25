@@ -50,7 +50,7 @@ public class ShowSeatsService {
     }
 
     public void create(Show show, List<Seat> seats){
-        log.info("Adding seats and show to ShowSeats");
+        log.info("Adding seats and show to ShowSeats {}, {}", show, seats);
         List<ShowSeats> showSeats = seats.stream()
                 .map(seat -> ShowSeats.builder()
                         .show(show)

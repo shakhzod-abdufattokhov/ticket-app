@@ -9,6 +9,7 @@ import uz.shaxzod.ticketapp.exceptions.CustomBadRequestException;
 import uz.shaxzod.ticketapp.exceptions.CustomNotFoundException;
 import uz.shaxzod.ticketapp.mapper.ShowMapper;
 import uz.shaxzod.ticketapp.models.entity.Event;
+import uz.shaxzod.ticketapp.models.entity.Seat;
 import uz.shaxzod.ticketapp.models.entity.Show;
 import uz.shaxzod.ticketapp.models.entity.Venue;
 import uz.shaxzod.ticketapp.models.requestDto.ShowRequest;
@@ -16,15 +17,13 @@ import uz.shaxzod.ticketapp.models.requestDto.ShowSeatsRequest;
 import uz.shaxzod.ticketapp.models.responseDto.ApiResponse;
 import uz.shaxzod.ticketapp.models.responseDto.PaginationResponse;
 import uz.shaxzod.ticketapp.models.responseDto.ShowResponse;
-import uz.shaxzod.ticketapp.repository.EventRepository;
-import uz.shaxzod.ticketapp.repository.ShowRepository;
-import uz.shaxzod.ticketapp.repository.ShowSeatsRepository;
-import uz.shaxzod.ticketapp.repository.VenueRepository;
+import uz.shaxzod.ticketapp.repository.*;
 import uz.shaxzod.ticketapp.service.ShowService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -36,6 +35,7 @@ public class ShowServiceImp implements ShowService {
     private final ShowRepository showRepository;
     private final ShowMapper showMapper;
     private final ShowSeatsService showSeatsService;
+    private final SeatRepository seatRepository;
 
     @Override
     public ApiResponse<String> create(ShowRequest request) {
@@ -45,6 +45,9 @@ public class ShowServiceImp implements ShowService {
 
         Venue venue = venueRepository.findById(request.getVenueId()).orElseThrow(
                 () -> new CustomNotFoundException("Venue not found with id: "+ request.getVenueId()));
+
+        // for fake data generator Do not use it in Production
+        List<Seat> seats = seatRepository.findAllByVenueId(venue.getId());
         validateShowTime(request, event);
 
         Show show = showMapper.toEntity(request);
@@ -52,7 +55,7 @@ public class ShowServiceImp implements ShowService {
         show.setVenue(venue);
         show = showRepository.save(show);
 
-        showSeatsService.create(show, venue.getSeats());
+        showSeatsService.create(show, seats);
         log.info("Show created successfully");
         return ApiResponse.success(show.getId(), "Show created successfully");
     }
@@ -161,7 +164,7 @@ public class ShowServiceImp implements ShowService {
 
     private static void validateShowTime(ShowRequest request, Event event) {
         if(request.getStartTime().isAfter(request.getEndTime()) || request.getStartTime().equals(request.getEndTime())){
-            log.error("Show startTime must be before the endTime");
+            log.error("Show startTime {} must be before the endTime {}", request.getStartTime(), request.getEndTime());
             throw new CustomBadRequestException("Show start time must be before the end time");
         }
         if( request.getDay().isBefore(LocalDate.now())){
@@ -173,26 +176,28 @@ public class ShowServiceImp implements ShowService {
             log.error("Show time is not valid, it must be future, not past");
             throw new CustomBadRequestException("Show time mustn't be in past, respect 1 hour gap");
         }
+        if(Objects.nonNull(event.getShows())){
+            boolean conflict = event.getShows().stream()
+                    .filter(show -> show.getShowDay().equals(request.getDay()))
+                    .anyMatch(existing -> {
+                        LocalTime exStart = existing.getStartTime();
+                        LocalTime exEnd   = existing.getEndTime();
 
-        boolean conflict = event.getShows().stream()
-                .filter(show -> show.getShowDay().equals(request.getDay()))
-                .anyMatch(existing -> {
-                    LocalTime exStart = existing.getStartTime();
-                    LocalTime exEnd   = existing.getEndTime();
+                        LocalTime exEndPlus1h = exEnd.plusHours(1);
+                        LocalTime newEndPlus1h = request.getEndTime().plusHours(1);
 
-                    LocalTime exEndPlus1h = exEnd.plusHours(1);
-                    LocalTime newEndPlus1h = request.getEndTime().plusHours(1);
+                        return (!request.getStartTime().isAfter(exEndPlus1h) &&
+                                !request.getStartTime().isBefore(exStart.minusHours(1))) &&
+                                (!exStart.isAfter(newEndPlus1h) &&
+                                        !exEnd.isBefore(request.getStartTime().minusHours(1)));
+                    });
 
-                    return (!request.getStartTime().isAfter(exEndPlus1h) &&
-                            !request.getStartTime().isBefore(exStart.minusHours(1))) &&
-                            (!exStart.isAfter(newEndPlus1h) &&
-                                    !exEnd.isBefore(request.getStartTime().minusHours(1)));
-                });
-
-        if (conflict) {
-            log.error("Show time conflict detected for event {}", event.getId());
-            throw new CustomBadRequestException(
-                    "Show time invalid. New show overlaps or does not respect 1-hour gap    .");
+            if (conflict) {
+                log.error("Show time conflict detected for event {}", event.getId());
+                throw new CustomBadRequestException(
+                        "Show time invalid. New show overlaps or does not respect 1-hour gap    .");
+            }
         }
+
     }
 }
