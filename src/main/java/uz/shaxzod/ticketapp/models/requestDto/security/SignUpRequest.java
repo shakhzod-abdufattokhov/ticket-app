@@ -27,4 +27,7 @@ public class SignUpRequest {
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$",
             message = "Password must contain at least one digit, one lowercase, one uppercase, one special character")
     private String password;
+    @NotBlank(message = "Email is required")
+    @Email
+    private String email;
 }

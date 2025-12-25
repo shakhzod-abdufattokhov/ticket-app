@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -123,6 +120,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ApiErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException ex){
+        return new ApiErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(CustomEmailSendException.class)
+    public ApiErrorResponse handleEmailSendException(CustomEmailSendException ex){
         return new ApiErrorResponse(ex.getMessage());
     }
 

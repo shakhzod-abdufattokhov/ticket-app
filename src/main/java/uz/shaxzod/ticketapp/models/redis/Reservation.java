@@ -2,7 +2,6 @@ package uz.shaxzod.ticketapp.models.redis;
 
 import jakarta.persistence.Id;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.index.Indexed;
